@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "name": "starters",
+        "count": 2
+    },
+    {
+        "id": 2,
+        "name": "maincourse",
+        "count": 2
+    },
+    {
+        "id": 3,
+        "name": "drinks",
+        "count": 2
+    },
+    {
+        "id": 4,
+        "name": "snacks",
+        "count": 3
+    },
+    {
+        "id": 5,
+        "name": "desserts",
+        "count": 2
+    }
+]

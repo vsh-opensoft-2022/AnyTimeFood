@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "category": "starters",
+        "name": "starter1",
+        "non-veg": true,
+        "price": "$20"
+    },
+    {
+        "id": 2,
+        "category": "starters",
+        "name": "starter2",
+        "non-veg": false,
+        "price": "$18"
+    },
+    {
+        "id": 3,
+        "category": "maincourse",
+        "name": "maincourse1",
+        "non-veg": false,
+        "price": "$15"
+    },
+    {
+        "id": 4,
+        "category": "maincourse",
+        "name": "maincourse2",
+        "non-veg": true,
+        "price": "$13"
+    },
+    {
+        "id": 5,
+        "category": "desserts",
+        "name": "dessert1",
+        "non-veg": false,
+        "price": "$10"
+    },
+    {
+        "id": 6,
+        "category": "desserts",
+        "name": "dessert2",
+        "non-veg": false,
+        "price": "$5"
+    },
+    {
+        "id": 7,
+        "category": "drinks",
+        "name": "drink1",
+        "non-veg": false,
+        "price": "$4"
+    },
+    {
+        "id": 8,
+        "category": "drinks",
+        "name": "drink2",
+        "non-veg": false,
+        "price": "$5"
+    },
+    {
+        "id": 9,
+        "category": "snacks",
+        "name": "snack1",
+        "non-veg": true,
+        "price": "$3"
+    },
+    {
+        "id": 10,
+        "category": "snacks",
+        "name": "snack2",
+        "non-veg": false,
+        "price": "$4"
+    },
+    {
+        "id": 11,
+        "category": "snacks",
+        "name": "newsnack",
+        "non-veg": true,
+        "price": "$6"
+    }
+]
