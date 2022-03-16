@@ -5,6 +5,9 @@ userRouter.get("/", userinfo.getUserinfo);
 userRouter
     .route("/addresses")
     .get(userinfo.getAllAddresses)
-    .post(userinfo.addAddress);
+    .post(userinfo.addAddress)
+userRouter
+    .route("/addresses/:id")
+    .delete(userinfo.deleteAddressById);
 
 module.exports = userRouter;

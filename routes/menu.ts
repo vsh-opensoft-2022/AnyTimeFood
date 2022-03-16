@@ -8,6 +8,7 @@ menurouter
   
 menurouter
     .route("/:name")
-    .get(menu.getItemByName);
+    .get(menu.getItemByName)
+    .delete(menu.deleteItemByName);
 
 module.exports = menurouter;

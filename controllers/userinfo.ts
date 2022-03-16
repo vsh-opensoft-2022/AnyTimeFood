@@ -32,3 +32,22 @@ exports.addAddress = async (req: Request, res: Response) => {
         }
     );
 }
+
+exports.deleteAddressById = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const newAddresses = userinfo.addresses.filter((el:any) => el.id != id);
+    userinfo.addresses = newAddresses;
+    writeFile(
+        `${__dirname}/../../data/userinfo.json`,
+        JSON.stringify(userinfo),
+        err => {
+            res.status(201).json({
+                status: "success",
+                data: {
+                    newAddresses,
+                }
+            });
+        }
+    );
+}
+

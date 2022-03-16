@@ -19,7 +19,7 @@ exports.getItemByName = async (req: Request, res: Response) => {
     if (item == null) {
         res.status(404).json({
             status: "failure",
-            data: "Page Not Found!",
+            data: "Item not Found!!",
         });
     }
     else{
@@ -59,4 +59,43 @@ exports.addItem = async (req: Request, res: Response) => {
             });
         }
     );
+};
+
+//add an item to the menu
+exports.deleteItemByName = async (req: Request, res: Response) => {
+    const name = req.params.name; 
+    const category = req.params.category;
+    //find the category
+    const newMenu = items.filter((el: any) => el.name != name);
+    if(newMenu == null){
+        res.status(404).json({
+            status: "failure",
+            data: "Item not found!!",
+        });
+    }
+    else{
+        const index = categoryList.find((el: any) => el.category === category).id - 1;
+        categoryList[index].count -= 1;
+        //modify the category count
+        writeFile(
+            `${__dirname}/../../data/categories.json`,
+            JSON.stringify(categoryList),
+            err => {
+                //nothing
+            }
+        );
+        //modifying the menu
+        writeFile(
+            `${__dirname}/../../data/menu.json`,
+            JSON.stringify(newMenu),
+            err => {
+                res.status(201).json({
+                    status: "success",
+                    data: {
+                        newMenu
+                    }
+                });
+            }
+        );
+    }
 };

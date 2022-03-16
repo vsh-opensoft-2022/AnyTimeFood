@@ -68,12 +68,5 @@
         "name": "snack2",
         "non-veg": false,
         "price": "$4"
-    },
-    {
-        "id": 11,
-        "category": "snacks",
-        "name": "newsnack",
-        "non-veg": true,
-        "price": "$6"
     }
 ]
