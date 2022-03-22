@@ -1,19 +1,15 @@
-import { Sequelize } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 import CustomerModel from "../models/CustomerModel";
 
 import Logger from "./logger";
 
-const sequelize = new Sequelize(process.env.DATABASE_STRING || "", {
+export const sequelize = new Sequelize(process.env.DATABASE_STRING || "", {
     logging: false,
     dialect: 'postgres'
 });
 
-const Customer = CustomerModel(sequelize);
+export const Customer = CustomerModel(sequelize, DataTypes);
 
 sequelize.sync({alter: true}).then(() => {
     Logger.info("db and tables have been created")
 });
-
-module.exports = {
-    Customer
-};

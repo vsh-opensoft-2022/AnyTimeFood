@@ -1,13 +1,13 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 
+// Setup environment variables from .env file.
+dotenv.config();
+
 const home = require("./routes/home");
 const menu = require("./routes/menu");
 const categories = require("./routes/categories");
 const userinfo = require("./routes/userinfo");
-
-// Setup environment variables from .env file.
-dotenv.config();
 
 // Initialize express framework.
 const app: Express = express();

@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 import { readFileSync, writeFile } from 'fs';
+import {Customer} from '../lib/dbConnection';
 
 const userinfo = JSON.parse(readFileSync(`${__dirname}/../../data/userinfo.json`, 'utf-8'));
 
+// Example api for database connection test. Never reveal all your customer details.
 exports.getUserinfo = async (req: Request, res: Response) => {
-    res.status(200).json({
-        status: "success",
-        userinfo,
-    });
+    try {
+        const allUsers = await Customer.findAll();
+        const response = {Status: "Success", Details: "All Customers Loaded", customers: allUsers};
+        return res.status(200).send(response);
+    }
+    catch (err: any) {
+        const response = {Status: "Failure", Details: err.message};
+        return res.status(400).send(response);
+    }
 }
 
 exports.getAllAddresses = async (req: Request, res: Response) => {

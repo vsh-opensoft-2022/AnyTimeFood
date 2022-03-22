@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 
-const CustomerModel = (sequelize: Sequelize) => {
+const CustomerModel = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
 
     interface CustomerAttributes {
         id: string,
@@ -24,16 +24,16 @@ const CustomerModel = (sequelize: Sequelize) => {
                 allowNull: false,
                 autoIncrement: false,
                 primaryKey: true,
-                type: DataTypes.UUID,
+                type: dataTypes.UUID,
                 unique: true,
             },
             name: {
                 allowNull: true,
-                type: DataTypes.TEXT,
+                type: dataTypes.TEXT,
             },
             email: {
                 allowNull: true,
-                type: DataTypes.TEXT,
+                type: dataTypes.TEXT,
             }
         }
     )
