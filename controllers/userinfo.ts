@@ -1,53 +1,34 @@
 import { Request, Response } from 'express';
-import { readFileSync, writeFile } from 'fs';
 
-const userinfo = JSON.parse(readFileSync(`${__dirname}/../../data/userinfo.json`, 'utf-8'));
+const dbConn = require('../config/db.config');
 
 exports.getUserinfo = async (req: Request, res: Response) => {
-    res.status(200).json({
-        status: "success",
-        userinfo,
+    dbConn.query('select * FROM userinfo', (err: any, result: any) => {
+        if (err) console.log('error while fetching data');
+        res.status(200).send(result);
     });
 }
 
 exports.getAllAddresses = async (req: Request, res: Response) => {
-    res.status(200).json({
-        status: "success",
-        addresses: userinfo.addresses,
+    dbConn.query('select * FROM address', (err: any, result: any) => {
+        if (err) console.log('error while fetching data');
+        res.status(200).send(result);
     });
 }
 
 exports.addAddress = async (req: Request, res: Response) => {
-    userinfo.addresses.push(req.body);
-    writeFile(
-        `${__dirname}/../../data/userinfo.json`,
-        JSON.stringify(userinfo),
-        err => {
-            res.status(201).json({
-                status: "success",
-                data: {
-                    newAddress: req.body,
-                }
-            });
-        }
-    );
+    const newitem = req.body;
+    dbConn.query(
+        `insert into address (address,street,city,state,pincode) values ('${newitem.name}','${newitem.category}',${newitem.nonveg},'${newitem.price}')`, (err: any) => {
+            if (err) console.log(err);
+            res.status(201).send("Item added successfully!");
+        });
 }
 
 exports.deleteAddressById = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const newAddresses = userinfo.addresses.filter((el:any) => el.id != id);
-    userinfo.addresses = newAddresses;
-    writeFile(
-        `${__dirname}/../../data/userinfo.json`,
-        JSON.stringify(userinfo),
-        err => {
-            res.status(201).json({
-                status: "success",
-                data: {
-                    newAddresses,
-                }
-            });
-        }
-    );
+    dbConn.query(`delete from address where id='${req.params.id}'`, (err: any) => {
+        if (err) console.log('error while fetching data');
+        res.status(202).send("Item deleted successfully");
+    });
 }
 

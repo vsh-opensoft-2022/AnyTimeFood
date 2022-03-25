@@ -1,0 +1,31 @@
+{
+    "CID": 1,
+    "items": [
+        {
+            "itemID": 1,
+            "quantity": 3,
+            "cost": "$60"
+        },
+        {
+            "itemID": 4,
+            "quantity": 2,
+            "cost": "$26"
+        },
+        {
+            "itemID": 5,
+            "quantity": 4,
+            "cost": "$40"
+        },
+        {
+            "itemID": 7,
+            "quantity": 1,
+            "cost": "$4"
+        },
+        {
+            "itemID": 10,
+            "quantity": 2,
+            "cost": "$8"
+        }
+    ],
+    "total": "$138"
+}
