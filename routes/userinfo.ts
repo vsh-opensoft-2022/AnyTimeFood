@@ -5,7 +5,7 @@ userRouter
     .route("/:uid")
     .get(userinfo.getUserinfo);
 userRouter
-    .route("/addresses")
+    .route("/:uid/addresses")
     .get(userinfo.getUserAddresses)
     .post(userinfo.addAddress);
 userRouter

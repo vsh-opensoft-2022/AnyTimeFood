@@ -23,7 +23,7 @@ app.use('/' || 'home', home);
 app.use('/menu', menu);
 app.use('/categories', categories);
 app.use('/cart', cart);
-app.use('/userinfo', userinfo);
+app.use('/users', userinfo);
 app.use('/orders', orders);
 
 
@@ -32,8 +32,8 @@ app.use('/orders', orders);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on PORT: ${PORT} ⚡`);
-    connection.connect((err: any) => {
+    /* connection.connect((err: any) => {
         if (err) throw err;
         console.log('Database Connected Successfully!');
-    });
+    }); */
 });

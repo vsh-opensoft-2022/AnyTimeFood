@@ -4,63 +4,51 @@ const dbConn = require('../config/db.config');
 
 exports.getCartItems = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
-    dbConn.query(`select * from menu m, cartItem ct where m.ID = ct.menuID && userID = ${uid}`, (err: any, result: any) => {
+    dbConn.query(`select * from menu m, cartItems ct where m.ID = ct.menuID && ct.userID = ${uid}`, (err: any, result: any) => {
         if (err) console.log(err);
-        res.status(202).send(result);
+        res.status(200).send(result);
     });
 }
 
 exports.addItem = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
-    let newID:number = 1;
+    const mysql = require('mysql2/promise');
+    const dbConn = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'anytimefooddb'
+    });
     const newItem = req.body;
-    let price:number = 0;
-    dbConn.query(`select price from menu where ID = ${newItem.menuID}`, (err: any, result: any) => {
-        if (err) console.log(err);  
-        price = result[0].price;
-    });
-    dbConn.query(`insert into cart (total, userID) values (${price}, ${uid})`, (err: any) => {
-        if (err) console.log(err);
-    });
-    dbConn.query(`select ID from cart where cart.userID = ${uid}`, (err: any, result: any) => {
-        if (err) console.log(err);
-        newID = result[0].ID;
-        console.log(newID);
-    });
-    dbConn.query(`insert into cartitem (quantity,menuID,cartID,userID) values (1,${newItem.menuID},${newID},${uid})`, (err: any) => {
-        if (err) console.log(err);
-        res.send(201).send("");
-    });
+    const [price, fields1] = await dbConn.query(`select price from menu where ID = ${newItem.menuID}`);
+    await dbConn.query(`update carts set total = total + ${price[0].price} where carts.userID = ${uid}`);
+    await dbConn.query(`insert into cartitems (quantity,menuID,userID) values (1,${newItem.menuID},${uid})`);
+    res.status(201).send("Item added successfully!");
 }
 
 exports.updateItemCount = async (req: Request, res: Response) => {
-    var price = 0;
-    var oldCount = 0;
-    const newCount = req.body.count;
+    const mysql = require('mysql2/promise');
+    const dbConnSync = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'root',
+        database: 'anytimefooddb'
+    });
+    const item = req.body;
     const uid = Number(req.params.uid);
-    dbConn.query(`select price,quantity from menu m, cartitem ct where m.ID = ct.menuID`, (err: any, result: any) => {
-        if (err) console.log(err);
-        price = result.price;
-        oldCount = result.quantity;
-    });
-    dbConn.query(`update cart set total = total + ${price*(newCount-oldCount)} where ID = ${uid}`, (err: any) => {
-        if (err) console.log(err);
-    });
-    if(newCount == 0){
-        dbConn.query(`delete * from cartitem where ID = ${req.body.id} && cartID = ${uid}`, (err: any) => {
-            if (err) console.log(err);
-            res.status(204).send("");
-        });
+    const [itemdata, fields1] = await dbConnSync.query(`select price,quantity from menu m, cartitems ct where m.ID = ct.menuID and ct.userID = ${uid}`);
+    await dbConnSync.query(`update carts set total = total + ${itemdata[0].price*(item.quantity-itemdata[0].quantity)} where userID = ${uid}`);
+    if(item.quantity == 0){
+        await dbConnSync.query(`delete from cartitems where menuID = ${item.menuID} and userID = ${uid}`);
+        res.status(204).send("count updated successfully!");
     }
-    dbConn.query(`update cartItem set quantity =  ${newCount}`, (err: any) => {
-        if (err) console.log(err);
-        res.status(202).send("");
-    });
+    await dbConnSync.query(`update cartItems set quantity = ${item.quantity} where menuID=${item.menuID} and userID=${uid}`);
+    res.status(201).send("count updated successfully!");
 }
 
 exports.clearCart = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
-    dbConn.query(`delete * from cart where userID = ${uid}`, (err: any, result: any) => {
+    dbConn.query(`delete from cartitems where userID = ${uid}`, (err: any, result: any) => {
         if (err) console.log(err);
         res.status(202).send("cart empty");
     });
