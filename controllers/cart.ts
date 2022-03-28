@@ -37,13 +37,15 @@ exports.updateItemCount = async (req: Request, res: Response) => {
     const item = req.body;
     const uid = Number(req.params.uid);
     const [itemdata, fields1] = await dbConnSync.query(`select price,quantity from menu m, cartitems ct where m.ID = ct.menuID and ct.userID = ${uid}`);
-    await dbConnSync.query(`update carts set total = total + ${itemdata[0].price*(item.quantity-itemdata[0].quantity)} where userID = ${uid}`);
-    if(item.quantity == 0){
+    await dbConnSync.query(`update carts set total = total + ${itemdata[0].price * (item.quantity - itemdata[0].quantity)} where userID = ${uid}`);
+    if (item.quantity == 0) {
         await dbConnSync.query(`delete from cartitems where menuID = ${item.menuID} and userID = ${uid}`);
         res.status(204).send("count updated successfully!");
     }
-    await dbConnSync.query(`update cartItems set quantity = ${item.quantity} where menuID=${item.menuID} and userID=${uid}`);
-    res.status(201).send("count updated successfully!");
+    else {
+        await dbConnSync.query(`update cartItems set quantity = ${item.quantity} where menuID=${item.menuID} and userID=${uid}`);
+        res.status(201).send("count updated successfully!");
+    }
 }
 
 exports.clearCart = async (req: Request, res: Response) => {
