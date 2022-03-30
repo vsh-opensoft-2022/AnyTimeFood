@@ -12,27 +12,29 @@ exports.getCartItems = async (req: Request, res: Response) => {
 
 exports.addItem = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
-    const mysql = require('mysql2/promise');
-    const dbConn = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'anytimefooddb'
+    const mysqlprom = require('mysql2/promise');
+    const dbConnSync = await mysqlprom.createConnection({
+        host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
+        user: 'admin',
+        password: 'password123',
+        database: 'anytimefooddb',
+        port: '3306'
     });
     const newItem = req.body;
-    const [price, fields1] = await dbConn.query(`select price from menu where ID = ${newItem.menuID}`);
-    await dbConn.query(`update carts set total = total + ${price[0].price} where carts.userID = ${uid}`);
-    await dbConn.query(`insert into cartitems (quantity,menuID,userID) values (1,${newItem.menuID},${uid})`);
+    const [price, fields1] = await dbConnSync.query(`select price from menu where ID = ${newItem.menuID}`);
+    await dbConnSync.query(`update carts set total = total + ${price[0].price} where carts.userID = ${uid}`);
+    await dbConnSync.query(`insert into cartitems (quantity,menuID,userID) values (1,${newItem.menuID},${uid})`);
     res.status(201).send("Item added successfully!");
 }
 
 exports.updateItemCount = async (req: Request, res: Response) => {
-    const mysql = require('mysql2/promise');
-    const dbConnSync = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        database: 'anytimefooddb'
+    const mysqlprom = require('mysql2/promise');
+    const dbConnSync = await mysqlprom.createConnection({
+        host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
+        user: 'admin',
+        password: 'password123',
+        database: 'anytimefooddb',
+        port: '3306'
     });
     const item = req.body;
     const uid = Number(req.params.uid);

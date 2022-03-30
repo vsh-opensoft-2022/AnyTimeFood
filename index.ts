@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 
+//routes to different pages
 const home = require("./routes/home");
 const menu = require("./routes/menu");
 const categories = require("./routes/categories");
@@ -27,14 +28,8 @@ app.use('/cart', cart);
 app.use('/users', userinfo);
 app.use('/orders', orders);
 
-
-
 // Configuring PORT to start server.
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on PORT: ${PORT} ⚡`);
-    /* connection.connect((err: any) => {
-        if (err) throw err;
-        console.log('Database Connected Successfully!');
-    }); */
 });

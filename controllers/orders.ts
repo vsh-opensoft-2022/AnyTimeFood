@@ -6,13 +6,13 @@ exports.getAllOrders = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);
   const mysqlprom = require('mysql2/promise');
   const dbConnSync = await mysqlprom.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root',
-      database: 'anytimefooddb'
+      host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
+      user: 'admin',
+      password: 'password123',
+      database: 'anytimefooddb',
+      port: '3306'
   });
   const [IDs, fields1] = await dbConnSync.execute(`select distinct ID from orders`);
-  console.log(IDs);
   var orders = [];
   for (let id of IDs) {
     const [result, field] = await dbConnSync.execute(`select * from orders od, orderitems oi, menu m where ${uid}=od.userID and od.userID=oi.userID and od.ID=oi.orderID and oi.menuID=m.ID and ${id.ID}=od.ID`);
@@ -33,10 +33,11 @@ exports.addOrder = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);  
   const mysqlprom = require('mysql2/promise');
   const dbConnSync = await mysqlprom.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root',
-      database: 'anytimefooddb'
+      host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
+      user: 'admin',
+      password: 'password123',
+      database: 'anytimefooddb',
+      port: '3306'
   });
   const [total, fields1] = await dbConnSync.execute(`select total from carts where carts.userID = ${uid}`);
   await dbConnSync.execute(`insert into orders (status,total,date,time,userID) values (0, ${total[0].total}, current_date(), current_time(), ${uid})`);
@@ -46,7 +47,7 @@ exports.addOrder = async (req: Request, res: Response) => {
     await dbConnSync.execute(`insert into orderitems (quantity,menuID,orderID,userID) values (${newItem.quantity}, ${newItem.menuID}, ${newID[0].id}, ${uid})`);
   }
   await dbConnSync.execute(`delete from cartitems where userID = ${uid}`);
-  res.status(201).send("");
+  res.status(201).send("order added.");
 };
 
 exports.addOrderFeedback = async (req: Request, res: Response) => {
