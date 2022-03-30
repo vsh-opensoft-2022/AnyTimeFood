@@ -19,7 +19,8 @@ const app: Express = express();
 // Test route to check if API is running.
 app.use(express.json());
 
-app.use('/' || 'home', home);
+app.use('/', home);
+app.use('/home', home);
 app.use('/menu', menu);
 app.use('/categories', categories);
 app.use('/cart', cart);
