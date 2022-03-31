@@ -1,6 +1,5 @@
-
 const mysql = require('mysql2');
-
+//database connection instance to access the database
 const dbConn = mysql.createConnection({
     host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
     user: 'admin',
@@ -9,6 +8,7 @@ const dbConn = mysql.createConnection({
     port: '3306'
 });
 
+//verifying the connection to the database
 dbConn.connect((err: any) => {
     if(err){
         console.log("ERROR in connecting to database!");

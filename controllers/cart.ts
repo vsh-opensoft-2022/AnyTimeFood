@@ -12,7 +12,10 @@ const dbConn = require('../config/db.config');
 exports.getCartItems = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
     dbConn.query(`select * from menu m, cartitems ct where m.ID = ct.menuID && ct.userID = ${uid}`, (err: any, result: any) => {
-        if (err) console.log(err);
+        if (err){
+            console.log(err);
+            throw err;
+        }
         res.status(200).send(result);
     });
 }
@@ -29,7 +32,8 @@ exports.getQuantityByID = async (req: Request, res: Response) => {
         res.status(200).send(result[0]);
     });
 }
-
+//route: cart/:uid
+//add an item instance to the cart
 exports.addItem = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
     const mysqlprom = require('mysql2/promise');
@@ -47,6 +51,8 @@ exports.addItem = async (req: Request, res: Response) => {
     res.status(201).send("Item added successfully!");
 }
 
+//route: cart/:uid
+//update the quantity of an item int the cart
 exports.updateItemCount = async (req: Request, res: Response) => {
     const mysqlprom = require('mysql2/promise');
     const dbConnSync = await mysqlprom.createConnection({
@@ -70,10 +76,14 @@ exports.updateItemCount = async (req: Request, res: Response) => {
     }
 }
 
+//clear the cart instance
 exports.clearCart = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
     dbConn.query(`delete from cartitems where userID = ${uid}`, (err: any, result: any) => {
-        if (err) console.log(err);
+        if (err){
+            console.log(err);
+            throw err;
+        }
         res.status(202).send("cart empty");
     });
 }
