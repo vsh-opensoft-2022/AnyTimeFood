@@ -59,19 +59,24 @@ exports.deleteAddressById = async (req: Request, res: Response) => {
 
 //route: /users
 //post request to authenticate user
-//
+// {
+//    "name": xyz,
+//    "password": abc
+// }
 exports.UserAuthentication = async (req: Request, res: Response) => {
     const user_details = req.body;
     dbConn.query(`select * from users`, (err: any, users: any) => {
         if (err) console.log('error while fetching data');
         var flag:Boolean = false;
+        var id = null;
         for(let user of users){
             if(user.name == user_details.name && user.password == user_details.password){
                 flag = true;
+                id = user.ID;   
             }
         }
-        if(flag) console.log("Login successfull");
-        else console.log("Login successfull");
-        res.status(200).send(flag);
+        if(flag) console.log("Login successfull!");
+        else console.log("Login failed!");
+        res.status(200).send({"flag": flag, "uid": id});
     });
 }

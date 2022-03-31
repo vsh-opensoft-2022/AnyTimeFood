@@ -8,5 +8,9 @@ cartRouter
     .patch(cart.updateItemCount)
     .delete(cart.clearCart);
 
+cartRouter
+    .route("/:uid/:id")
+    .get(cart.getQuantityByID);
+
 
 module.exports = cartRouter;

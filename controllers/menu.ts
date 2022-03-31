@@ -40,7 +40,14 @@ exports.getItemByID = async (req: Request, res: Response) => {
         res.status(200).send(arr);
     });
 };
-
+//route: /menu
+//add a new item to the database
+// {
+//      "name": xyz,
+//      "category": abc,
+//      "nonveg": true,
+//      "price": 99.99
+// }
 exports.addItem = async (req: Request, res: Response) => {
     const newitem = req.body;
     dbConn.query(`insert into menu (name,category,nonveg,price,frequency) values ('${newitem.name}','${newitem.category}',${newitem.nonveg},'${newitem.price}',0)`, (err: any) => {
@@ -48,6 +55,11 @@ exports.addItem = async (req: Request, res: Response) => {
     });
 };
 
+//route: /menu
+//delete existing item by its ID
+// {
+//      "id": 1
+// }
 exports.deleteItemByID = async (req: Request, res: Response) => {
     dbConn.query(`delete * from menu where id='${req.params.id}'`, (err: any) => {
         if (err) console.log(err);

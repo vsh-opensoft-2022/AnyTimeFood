@@ -15,8 +15,8 @@ exports.getAllCategories = async (req: Request, res: Response) => {
 //      "categoryID": 1 
 // }
 exports.getItemByCategory = async (req: Request, res: Response) => {
-    const id = req.params.categoryID;
-    dbConn.query(`select * from menu where categoryID = "${id}"`, (err: any, result: any) => {
+    const id = req.params.category;
+    dbConn.query(`select * from menu where categoryID = ${id}`, (err: any, result: any) => {
         if (err) console.log(err);
         res.status(200).send(result);
     });
