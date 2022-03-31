@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 const dbConn = require('../config/db.config');
 
+//route: /orders/:uid
+//get all orders of a user
 exports.getAllOrders = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);
   const mysqlprom = require('mysql2/promise');
@@ -20,15 +22,23 @@ exports.getAllOrders = async (req: Request, res: Response) => {
   }
   res.status(200).send(orders);
 };
+
+//route: /orders/:uid/:id
+//get orders of a user by order id
 exports.getOrderbyID = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);
   const id = Number(req.params.id);
   dbConn.query(`select * from orders od, orderitems oi, menu m where ${uid}=od.userID and od.userID=oi.userID and oi.orderID=od.ID and m.ID=oi.menuID and ${id}=od.ID`, (err: any, result: any) => {
-    if (err) console.log(err);
+    if (err){
+      console.log(err);
+      throw err;
+  }
     res.status(200).send({ "orderID": id, "data": result });
   });
 };
 
+//route: /orders/:uid
+// delete the cart instance and add an order instance
 exports.addOrder = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);
   const mysqlprom = require('mysql2/promise');
@@ -50,11 +60,16 @@ exports.addOrder = async (req: Request, res: Response) => {
   res.status(201).send("order added.");
 };
 
+//route: /feedback/:orderID
+// post a feedback on an order into the database
 exports.addOrderFeedback = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);
   const review = req.body;
   dbConn.query(`insert into feedback (rating,feedback,ordersID,userID) values (${review.rating},${review.feedback},${review.orderID},${uid})`, (err: any, result: any) => {
-    if (err) console.log(err);
+    if (err){
+      console.log(err);
+      throw err;
+    }
     res.status(200).send("feedback entry done!");
   });
 };

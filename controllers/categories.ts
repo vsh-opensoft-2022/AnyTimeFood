@@ -5,7 +5,10 @@ const dbConn = require('../config/db.config');
 //get all categories of food items available
 exports.getAllCategories = async (req: Request, res: Response) => {
     dbConn.query(`select * from categories`, (err: any, result: any) => {
-        if (err) console.log(err);
+        if (err){
+            console.log(err);
+            throw err;
+        }
         res.status(200).send(result);
     });
 };
@@ -17,7 +20,13 @@ exports.getAllCategories = async (req: Request, res: Response) => {
 exports.getItemByCategory = async (req: Request, res: Response) => {
     const id = req.params.category;
     dbConn.query(`select * from menu where categoryID = ${id}`, (err: any, result: any) => {
-        if (err) console.log(err);
+        if (err){
+            console.log(err);
+            throw err;
+        }
+        for(let item of result){
+            item.photo = Buffer.from(item.photo).toString('base64');
+        }
         res.status(200).send(result);
     });
 };
