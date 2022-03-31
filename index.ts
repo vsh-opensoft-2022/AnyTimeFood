@@ -9,8 +9,6 @@ const userinfo = require("./routes/userinfo");
 const cart = require("./routes/cart");
 const orders = require("./routes/orders");
 
-const connection = require('./config/db.config');
-
 // Setup environment variables from .env file.
 dotenv.config();
 
