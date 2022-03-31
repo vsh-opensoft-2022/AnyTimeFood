@@ -2,11 +2,11 @@ const cartRouter = require("express").Router();
 const cart = require("../controllers/cart");
 
 cartRouter
-    .route("/")
+    .route("/:uid")
     .get(cart.getCartItems)
-    .post(cart.addToCart)
-    .patch(cart.updateItem)
-    .delete(cart.deleteItem);
+    .post(cart.addItem)
+    .patch(cart.updateItemCount)
+    .delete(cart.clearCart);
 
 
 module.exports = cartRouter;
