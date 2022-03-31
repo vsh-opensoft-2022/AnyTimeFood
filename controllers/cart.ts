@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 const dbConn = require('../config/db.config');
 
+//route: /cart/:uid
 //get items in cart of a user
 // {
 //      "name": xyz,
@@ -13,6 +14,19 @@ exports.getCartItems = async (req: Request, res: Response) => {
     dbConn.query(`select * from menu m, cartitems ct where m.ID = ct.menuID && ct.userID = ${uid}`, (err: any, result: any) => {
         if (err) console.log(err);
         res.status(200).send(result);
+    });
+}
+
+//route: /cart/:uid/:id
+exports.getQuantityByID = async (req: Request, res: Response) => {
+    const uid = Number(req.params.uid);
+    const id = Number(req.params.id);
+    dbConn.query(`select quantity from menu m, cartitems ct where m.ID = ct.menuID && ct.userID = ${uid} && m.ID = ${id}`, (err: any, result: any) => {
+        if (err){
+            console.log(err);
+            throw err;
+        }
+        res.status(200).send(result[0]);
     });
 }
 

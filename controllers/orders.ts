@@ -6,17 +6,17 @@ exports.getAllOrders = async (req: Request, res: Response) => {
   const uid = Number(req.params.uid);
   const mysqlprom = require('mysql2/promise');
   const dbConnSync = await mysqlprom.createConnection({
-      host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
-      user: 'admin',
-      password: 'password123',
-      database: 'anytimefooddb',
-      port: '3306'
+    host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'password123',
+    database: 'anytimefooddb',
+    port: '3306'
   });
   const [IDs, fields1] = await dbConnSync.execute(`select distinct ID from orders`);
   var orders = [];
   for (let id of IDs) {
     const [result, field] = await dbConnSync.execute(`select * from orders od, orderitems oi, menu m where ${uid}=od.userID and od.userID=oi.userID and od.ID=oi.orderID and oi.menuID=m.ID and ${id.ID}=od.ID`);
-    orders.push({"orderID":id.ID, "data":result});
+    orders.push({ "orderID": id.ID, "data": result });
   }
   res.status(200).send(orders);
 };
@@ -25,19 +25,19 @@ exports.getOrderbyID = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   dbConn.query(`select * from orders od, orderitems oi, menu m where ${uid}=od.userID and od.userID=oi.userID and oi.orderID=od.ID and m.ID=oi.menuID and ${id}=od.ID`, (err: any, result: any) => {
     if (err) console.log(err);
-    res.status(200).send({"orderID":id, "data":result});
+    res.status(200).send({ "orderID": id, "data": result });
   });
 };
 
 exports.addOrder = async (req: Request, res: Response) => {
-  const uid = Number(req.params.uid);  
+  const uid = Number(req.params.uid);
   const mysqlprom = require('mysql2/promise');
   const dbConnSync = await mysqlprom.createConnection({
-      host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
-      user: 'admin',
-      password: 'password123',
-      database: 'anytimefooddb',
-      port: '3306'
+    host: 'anytimefood.cpavwkcja63z.ap-south-1.rds.amazonaws.com',
+    user: 'admin',
+    password: 'password123',
+    database: 'anytimefooddb',
+    port: '3306'
   });
   const [total, fields1] = await dbConnSync.execute(`select total from carts where carts.userID = ${uid}`);
   await dbConnSync.execute(`insert into orders (status,total,date,time,userID) values (0, ${total[0].total}, current_date(), current_time(), ${uid})`);
