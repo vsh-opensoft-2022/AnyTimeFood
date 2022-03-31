@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 
 const dbConn = require('../config/db.config');
 
+//get items in cart of a user
+// {
+//      "name": xyz,
+//      "category": abc,
+//      "price": 99.99
+// }
 exports.getCartItems = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
     dbConn.query(`select * from menu m, cartitems ct where m.ID = ct.menuID && ct.userID = ${uid}`, (err: any, result: any) => {
