@@ -42,7 +42,7 @@ exports.addOrder = async (req: Request, res: Response) => {
   const [total, fields1] = await dbConnSync.execute(`select total from carts where carts.userID = ${uid}`);
   await dbConnSync.execute(`insert into orders (status,total,date,time,userID) values (0, ${total[0].total}, current_date(), current_time(), ${uid})`);
   const [newID, fields2] = await dbConnSync.execute(`select last_insert_id() id`);
-  const [newOrder, fields3] = await dbConnSync.execute(`select quantity, menuID from menu m, cartItems ct where m.ID = ct.menuID and ct.userID = ${uid}`);
+  const [newOrder, fields3] = await dbConnSync.execute(`select quantity, menuID from menu m, cartitems ct where m.ID = ct.menuID and ct.userID = ${uid}`);
   for (let newItem of Object(newOrder)) {
     await dbConnSync.execute(`insert into orderitems (quantity,menuID,orderID,userID) values (${newItem.quantity}, ${newItem.menuID}, ${newID[0].id}, ${uid})`);
   }

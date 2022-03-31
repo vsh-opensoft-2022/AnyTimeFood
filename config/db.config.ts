@@ -12,7 +12,7 @@ const dbConn = mysql.createConnection({
 dbConn.connect((err: any) => {
     if(err){
         console.log("ERROR in connecting to database!");
-        throw err.stack;
+        throw err;
     }
     console.log("database connection successfull!");
 });
