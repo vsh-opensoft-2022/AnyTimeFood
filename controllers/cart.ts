@@ -4,7 +4,7 @@ const dbConn = require('../config/db.config');
 
 exports.getCartItems = async (req: Request, res: Response) => {
     const uid = Number(req.params.uid);
-    dbConn.query(`select * from menu m, cartItems ct where m.ID = ct.menuID && ct.userID = ${uid}`, (err: any, result: any) => {
+    dbConn.query(`select * from menu m, cartitems ct where m.ID = ct.menuID && ct.userID = ${uid}`, (err: any, result: any) => {
         if (err) console.log(err);
         res.status(200).send(result);
     });
@@ -45,7 +45,7 @@ exports.updateItemCount = async (req: Request, res: Response) => {
         res.status(204).send("count updated successfully!");
     }
     else {
-        await dbConnSync.query(`update cartItems set quantity = ${item.quantity} where menuID=${item.menuID} and userID=${uid}`);
+        await dbConnSync.query(`update cartitems set quantity = ${item.quantity} where menuID=${item.menuID} and userID=${uid}`);
         res.status(201).send("count updated successfully!");
     }
 }

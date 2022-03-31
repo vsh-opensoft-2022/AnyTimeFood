@@ -5,21 +5,33 @@ const dbConn = require('../config/db.config');
 exports.getAllItems = async (req: Request, res: Response) => {
     dbConn.query('select * from menu', (err: any, result: any) => {
         if (err) console.log(err);
-        res.status(200).send(result);
+        var arr = [];
+        for(let item of result){
+            arr.push({"ID": item.ID, "name": item.name, "photo":item.photo, "menu": item})
+        }
+        res.status(200).send(arr);
     });
 };
 
 exports.getItemByName = async (req: Request, res: Response) => {
     dbConn.query(`select * from menu where menu.name = '${req.params.name}'`, (err: any, result: any) => {
         if (err) console.log(err);
-        res.status(200).send(result);
+        var arr = [];
+        for(let item of result){
+            arr.push({"ID": item.ID, "name": item.name, "photo":item.photo, "menu": item})
+        }
+        res.status(200).send(arr);
     });
 };
 
 exports.getItemByID = async (req: Request, res: Response) => {
     dbConn.query(`select * from menu where menu.ID = '${req.params.id}'`, (err: any, result: any) => {
         if (err) console.log(err);
-        res.status(200).send(result);
+        var arr = [];
+        for(let item of result){
+            arr.push({"ID": item.ID, "name": item.name, "photo":item.photo, "menu": item})
+        }
+        res.status(200).send(arr);
     });
 };
 
